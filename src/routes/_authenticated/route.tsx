@@ -1,11 +1,11 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -13,8 +13,12 @@ export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/auth" });
-    return { user: data.user };
+    if (!error && data.user) return { user: data.user };
+
+    // Open access: everyone gets an invisible guest session, no sign-in screen.
+    const { data: guest, error: guestError } = await supabase.auth.signInAnonymously();
+    if (guestError || !guest.user) throw new Error("Could not start a guest session");
+    return { user: guest.user };
   },
   component: AppLayout,
 });
@@ -27,7 +31,7 @@ function AppLayout() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/", replace: true });
   };
 
   return (
@@ -45,8 +49,8 @@ function AppLayout() {
               onClick={signOut}
               className="shrink-0 rounded-full"
             >
-              <LogOut />
-              <span className="hidden sm:inline">Sign out</span>
+              <RotateCcw />
+              <span className="hidden sm:inline">Reset session</span>
             </Button>
           </header>
           <main className="min-w-0 flex-1 p-4 sm:p-6">
