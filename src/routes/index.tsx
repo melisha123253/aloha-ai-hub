@@ -61,7 +61,7 @@ function Landing() {
         <div className="min-w-0 flex-1" />
         <ThemeToggle />
         <Button asChild className="shrink-0 rounded-2xl">
-          <Link to="/auth">Sign in</Link>
+          <Link to="/dashboard">Open the app</Link>
         </Button>
       </header>
 
@@ -86,7 +86,7 @@ function Landing() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="lg" className="rounded-2xl">
-                <Link to="/auth">Get started free</Link>
+                <Link to="/dashboard">Start now — no sign-up</Link>
               </Button>
             </div>
           </div>
