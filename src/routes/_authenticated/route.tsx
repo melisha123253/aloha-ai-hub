@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -49,8 +49,8 @@ function AppLayout() {
               onClick={signOut}
               className="shrink-0 rounded-full"
             >
-              <LogOut />
-              <span className="hidden sm:inline">Sign out</span>
+              <RotateCcw />
+              <span className="hidden sm:inline">Reset session</span>
             </Button>
           </header>
           <main className="min-w-0 flex-1 p-4 sm:p-6">
